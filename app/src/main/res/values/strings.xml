@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MVVM-Artichecture-Sample</string>
+    <string name="internet_error">لطفا دسترسی به اینترنت خود را چک کنید.</string>
+    <string name="erro">خطا</string>
+    <string name="errorRecieveData">خطا در دریافت اطلاعات</string>
+</resources>
