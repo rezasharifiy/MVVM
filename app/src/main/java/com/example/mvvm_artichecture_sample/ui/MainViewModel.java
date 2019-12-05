@@ -11,7 +11,7 @@ import com.example.mvvm_artichecture_sample.base.network.baseobserver.ErrorConsu
 import com.example.mvvm_artichecture_sample.base.network.baseobserver.SuccessConsumer;
 import com.example.mvvm_artichecture_sample.base.network.baseobserver.WebServiceListener;
 import com.example.mvvm_artichecture_sample.data.MainRepository;
-import com.example.mvvm_artichecture_sample.data.remote.apimodel.CountryModel;
+import com.example.mvvm_artichecture_sample.data.remote.apimodel.ReposnseModel;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class MainViewModel extends BaseViewModel<MainRepository> implements WebS
 
     private MutableLiveData<Boolean> showLoadig = new MutableLiveData<>();
     private MutableLiveData<MessageModel> showMessage = new MutableLiveData<>();
-    private MutableLiveData<List<CountryModel>> countryList = new MutableLiveData<>();
+    private MutableLiveData<List<ReposnseModel>> countryList = new MutableLiveData<>();
     private static final String MAIN_REQUEST = "main_list";
 
 
@@ -45,11 +45,11 @@ public class MainViewModel extends BaseViewModel<MainRepository> implements WebS
 
     }
 
-    private void setList(List<CountryModel> list) {
+    private void setList(List<ReposnseModel> list) {
         countryList.setValue(list);
     }
 
-    public MutableLiveData<List<CountryModel>> updateList() {
+    public MutableLiveData<List<ReposnseModel>> updateList() {
         return countryList;
     }
 
@@ -72,7 +72,7 @@ public class MainViewModel extends BaseViewModel<MainRepository> implements WebS
     @Override
     public void onSuccess(Object object, int statusCode, String requestType) throws Exception {
         showLoading(false);
-        setList((List<CountryModel>) object);
+        setList((List<ReposnseModel>) object);
     }
 
     @Override

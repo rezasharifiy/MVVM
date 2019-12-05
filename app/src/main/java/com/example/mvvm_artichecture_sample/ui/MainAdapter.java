@@ -14,7 +14,7 @@ import com.example.mvvm_artichecture_sample.data.remote.apimodel.CountryModel;
 
 import java.util.List;
 
-public class MainAdapter extends RecyclerView.Adapter<> {
+public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
 
     private Context mContext;
     private List<CountryModel> mList;
@@ -27,15 +27,15 @@ public class MainAdapter extends RecyclerView.Adapter<> {
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.main_item_list,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.main_item_list, parent, false);
         return new MainViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
 
-        CountryModel model=mList.get(position);
-        holder.ti
+        CountryModel model = mList.get(position);
+        holder.title.setText(model.getName());
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MainAdapter extends RecyclerView.Adapter<> {
     }
 
     class MainViewHolder extends RecyclerView.ViewHolder {
-      public    TextView title;
+        public TextView title;
 
         public MainViewHolder(@NonNull View itemView) {
             super(itemView);

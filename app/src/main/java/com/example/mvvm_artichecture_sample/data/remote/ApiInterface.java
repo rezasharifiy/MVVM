@@ -1,6 +1,6 @@
 package com.example.mvvm_artichecture_sample.data.remote;
 
-import com.example.mvvm_artichecture_sample.data.remote.apimodel.CountryModel;
+import com.example.mvvm_artichecture_sample.data.remote.apimodel.ReposnseModel;
 
 import io.reactivex.Observable;
 import retrofit2.Response;
@@ -11,5 +11,5 @@ public interface ApiInterface {
 
     @Headers("Content-Type: application/json")
     @GET("countries")
-    Observable<Response<CountryModel>> getList();
+    Observable<Response<ReposnseModel>> getList();
 }

@@ -3,41 +3,39 @@ package com.example.mvvm_artichecture_sample.data.remote.apimodel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class CountryModel {
 
     @SerializedName("code")
     @Expose
-    private Integer code;
-    @SerializedName("result")
+    private String code;
+    @SerializedName("name")
     @Expose
-    private List<Result> result = null;
-    @SerializedName("extra")
+    private String name;
+    @SerializedName("states")
     @Expose
-    private List<Object> extra = null;
+    private Object states;
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
-    public List<Result> getResult() {
-        return result;
+    public String getName() {
+        return name;
     }
 
-    public void setResult(List<Result> result) {
-        this.result = result;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<Object> getExtra() {
-        return extra;
+    public Object getStates() {
+        return states;
     }
 
-    public void setExtra(List<Object> extra) {
-        this.extra = extra;
+    public void setStates(Object states) {
+        this.states = states;
     }
 }
