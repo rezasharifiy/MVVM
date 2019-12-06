@@ -9,7 +9,6 @@ import retrofit2.http.Headers;
 
 public interface ApiInterface {
 
-    @Headers("Content-Type: application/json")
     @GET("countries")
     Observable<Response<ReposnseModel>> getList();
 }

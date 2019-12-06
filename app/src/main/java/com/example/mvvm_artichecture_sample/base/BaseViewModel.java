@@ -13,14 +13,13 @@ import io.reactivex.disposables.Disposable;
 public class BaseViewModel<R extends BaseRepository> extends AndroidViewModel implements LifecycleObserver {
 
 
-    private final R mRepository;
     private R repository;
     private CompositeDisposable mCompositeDisposable;
     private Lifecycle mLifecycle;
 
     public BaseViewModel(Application application, R repository) {
         super(application);
-        mRepository = repository;
+        this.repository = repository;
         this.mCompositeDisposable = new CompositeDisposable();
 
     }
