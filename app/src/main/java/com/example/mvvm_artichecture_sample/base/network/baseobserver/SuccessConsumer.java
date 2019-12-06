@@ -5,17 +5,19 @@ import com.example.mvvm_artichecture_sample.base.network.statuscode.ClientCode;
 import com.example.mvvm_artichecture_sample.base.network.statuscode.RestCode;
 import com.google.gson.Gson;
 
+import java.lang.ref.WeakReference;
+
 import io.reactivex.functions.Consumer;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 public class SuccessConsumer implements Consumer<Response> {
 	
-	private WebServiceListener listener;
+	private WeakReference<WebServiceListener> listenerWeakReference;
 	private String requestType;
 	
 	public SuccessConsumer(WebServiceListener listener, String requestType) {
-		this.listener = listener;
+		listenerWeakReference = new WeakReference<>(listener);
 		this.requestType = requestType;
 	}
 	
@@ -41,9 +43,9 @@ public class SuccessConsumer implements Consumer<Response> {
 	}
 	
 	private void manageSuccess(Response tResponse) {
-		if (listener != null) {
+		if (listenerWeakReference.get() != null) {
 			try {
-				listener.onSuccess(tResponse.body(), tResponse.code(), requestType);
+				listenerWeakReference.get().onSuccess(tResponse.body(), tResponse.code(), requestType);
 			} catch (Exception e) {
 				manageInternalException(e);
 			}
@@ -52,11 +54,11 @@ public class SuccessConsumer implements Consumer<Response> {
 	
 	private void manageOnError(APIError apiError, int statusCode, String requestType) {
 		try {
-			if (listener != null) {
-				listener.onError(apiError, statusCode, requestType);
+			if (listenerWeakReference.get() != null) {
+				listenerWeakReference.get().onError(apiError, statusCode, requestType);
 			} else {
 				apiError = new APIError("Unexpected error", statusCode);
-				listener.onError(apiError, statusCode, requestType);
+				listenerWeakReference.get().onError(apiError, statusCode, requestType);
 			}
 		} catch (Exception e) {
 			manageInternalException(e);
@@ -66,10 +68,10 @@ public class SuccessConsumer implements Consumer<Response> {
 	
 	private void manageInternalException(Exception ex) {
 		ex.printStackTrace();
-		if (listener != null) {
+		if (listenerWeakReference.get() != null) {
 			try {
 				APIError apiError = new APIError("Unexpected error", ClientCode.EXCEPTION_CODE);
-				listener.onError(apiError, ClientCode.EXCEPTION_CODE, requestType);
+				listenerWeakReference.get().onError(apiError, ClientCode.EXCEPTION_CODE, requestType);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

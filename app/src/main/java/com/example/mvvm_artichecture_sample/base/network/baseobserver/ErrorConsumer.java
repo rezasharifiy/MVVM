@@ -3,6 +3,7 @@ package com.example.mvvm_artichecture_sample.base.network.baseobserver;
 import com.example.mvvm_artichecture_sample.base.network.model.APIError;
 import com.example.mvvm_artichecture_sample.base.network.statuscode.ClientCode;
 
+import java.lang.ref.WeakReference;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
@@ -10,12 +11,11 @@ import io.reactivex.functions.Consumer;
 
 public class ErrorConsumer implements Consumer<Throwable> {
 	
-	
-	private WebServiceListener listener;
+	private WeakReference<WebServiceListener >listenerWeakReference;
 	private String requestType;
 	
 	public ErrorConsumer(WebServiceListener listener, String requestType) {
-		this.listener = listener;
+		listenerWeakReference=new WeakReference<>(listener);
 		this.requestType = requestType;
 	}
 	
@@ -36,11 +36,11 @@ public class ErrorConsumer implements Consumer<Throwable> {
 	
 	private void manageOnError(APIError apiError, int statusCode, String requestType) {
 		try {
-			if (listener != null) {
-				listener.onError(apiError, statusCode, requestType);
+			if (listenerWeakReference.get() != null) {
+				listenerWeakReference.get().onError(apiError, statusCode, requestType);
 			} else {
 				apiError = new APIError("Unexpected error", statusCode);
-				listener.onError(apiError, statusCode, requestType);
+				listenerWeakReference.get().onError(apiError, statusCode, requestType);
 			}
 		} catch (Exception e) {
 			manageInternalException(e);
@@ -50,10 +50,10 @@ public class ErrorConsumer implements Consumer<Throwable> {
 	
 	private void manageInternalException(Exception ex) {
 		ex.printStackTrace();
-		if (listener != null) {
+		if (listenerWeakReference.get() != null) {
 			try {
 				APIError apiError = new APIError("Unexpected error", ClientCode.EXCEPTION_CODE);
-				listener.onError(apiError, ClientCode.EXCEPTION_CODE, requestType);
+				listenerWeakReference.get().onError(apiError, ClientCode.EXCEPTION_CODE, requestType);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
