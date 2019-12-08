@@ -22,7 +22,8 @@ import com.example.mvvm_artichecture_sample.ui.adpater.MainAdapterHanlder;
 import java.util.List;
 
 public class MainFragment extends BaseFragment<MainViewModel> implements MainAdapterHanlder {
-	
+
+	public static final String TAG = MainFragment.class.getName();
 	private RecyclerView mRecyclerView;
 	private ProgressBar mainPb;
 	private TextView errorTv;
@@ -50,7 +51,6 @@ public class MainFragment extends BaseFragment<MainViewModel> implements MainAda
 	protected void setupView() {
 		findView();
 		setAdapter();
-		fetchData();
 		updateList();
 		observeLoading();
 		observeShowMessage();
@@ -69,10 +69,7 @@ public class MainFragment extends BaseFragment<MainViewModel> implements MainAda
 	private void addList(List<CountryModel> list) {
 		mainAdapter.addItem(list);
 	}
-	
-	private void fetchData() {
-		mViewModel.fechList();
-	}
+
 	
 	private void observeShowErrorMessage() {
 		mViewModel.message().observe(this, new Observer<MessageModel>() {
