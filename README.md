@@ -10,10 +10,11 @@ The app has following packages:
     ui: View classes along with their corresponding ViewModel.
     utils: Utility classes.
    
-project reference resources:
+Project reference resources:
 
- * [Kotlin Site](https://kotlinlang.org/)
- * [Getting Started Guide](https://kotlinlang.org/docs/tutorials/getting-started.html)
+ * [android-mvvm-architecture](https://github.com/MindorksOpenSource/android-mvvm-architecture)
+ * [Making Network calls on Android with Retrofit + Kotlin’s Coroutines](https://medium.com/hacktive-devs/making-network-calls-on-           android-with-retrofit-kotlins-coroutines-72fd2594184b)
+     * [Kotlin Site](https://kotlinlang.org/)
  * [Try Kotlin](https://play.kotlinlang.org/)
  * [Kotlin Standard Library](https://kotlinlang.org/api/latest/jvm/stdlib/index.html)
  * [Issue Tracker](https://youtrack.jetbrains.com/issues/KT)
