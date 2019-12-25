@@ -10,7 +10,19 @@ The app has following packages:
     ui: View classes along with their corresponding ViewModel.
     utils: Utility classes.
    
- 
+ Welcome to [Kotlin](https://kotlinlang.org/)! Some handy links:
+
+ * [Kotlin Site](https://kotlinlang.org/)
+ * [Getting Started Guide](https://kotlinlang.org/docs/tutorials/getting-started.html)
+ * [Try Kotlin](https://play.kotlinlang.org/)
+ * [Kotlin Standard Library](https://kotlinlang.org/api/latest/jvm/stdlib/index.html)
+ * [Issue Tracker](https://youtrack.jetbrains.com/issues/KT)
+ * [Forum](https://discuss.kotlinlang.org/)
+ * [Kotlin Blog](https://blog.jetbrains.com/kotlin/)
+ * [Follow Kotlin on Twitter](https://twitter.com/kotlin)
+ * [Public Slack channel](https://slack.kotlinlang.org/)
+ * [TeamCity CI build](https://teamcity.jetbrains.com/project.html?tab=projectOverview&projectId=Kotlin)
+
 
 project reference resources:
 
