@@ -10,7 +10,7 @@ The app has following packages:
     ui: View classes along with their corresponding ViewModel.
     utils: Utility classes.
    
- Welcome to [Kotlin](https://kotlinlang.org/)! Some handy links:
+project reference resources:
 
  * [Kotlin Site](https://kotlinlang.org/)
  * [Getting Started Guide](https://kotlinlang.org/docs/tutorials/getting-started.html)
