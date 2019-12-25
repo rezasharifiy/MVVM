@@ -1,5 +1,5 @@
 # Android MVVM Architecture: Sample App
-This repository contains a detailed sample app that implements MVVM architecture using Retrofit2, RxJava 
+This repository contains a detailed sample app that implements MVVM architecture using Retrofit2 , coroutines 
 
 
 
@@ -10,7 +10,7 @@ The app has following packages:
     ui: View classes along with their corresponding ViewModel.
     utils: Utility classes.
    
-Classes have been designed in such a way that it could be inherited and maximize the code reuse.
+ 
 
 project reference resources:
 
