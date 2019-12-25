@@ -1,5 +1,5 @@
 # Android MVVM Architecture: Sample App
-This repository contains a detailed sample app that implements MVVM architecture using Retrofit2 , coroutines 
+This repository contains a detailed sample app that implements MVVM architecture using Retrofit2 , coroutines  
 
 
 
