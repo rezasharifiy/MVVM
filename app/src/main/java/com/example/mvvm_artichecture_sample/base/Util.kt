@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 
-class Util {
+class  Util {
 
     fun isConnection(mContext: Context): Boolean {
         val connectivityManager = mContext.getSystemService(

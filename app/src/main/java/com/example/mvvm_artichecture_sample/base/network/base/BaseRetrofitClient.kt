@@ -1,9 +1,9 @@
 package com.example.mvvm_artichecture_sample.base.network.base
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 abstract class BaseRetrofitClient {
 
@@ -12,10 +12,9 @@ abstract class BaseRetrofitClient {
     protected abstract val baseUrl: String
 
     fun <T> createRequest(tClass: Class<T>): T {
-
         val retrofit = Retrofit.Builder().baseUrl(baseUrl)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                .addConverterFactory(MoshiConverterFactory.create())
                 .client(client)
                 .build()
         return retrofit.create(tClass)

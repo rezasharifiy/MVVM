@@ -1,10 +1,10 @@
 package com.example.mvvm_artichecture_sample.data
 
+import com.example.mvvm_artichecture_sample.base.network.Output
+import com.example.mvvm_artichecture_sample.data.remote.apimodel.ResponsModel
 
-import com.example.mvvm_artichecture_sample.data.remote.apimodel.ReposnseModel
-import io.reactivex.Observable
-import retrofit2.Response
 
 interface MainRepositoryHandler {
-    val list: Observable<Response<ReposnseModel>>
+    suspend fun countries(requestType:String): Output<ResponsModel>
+
 }

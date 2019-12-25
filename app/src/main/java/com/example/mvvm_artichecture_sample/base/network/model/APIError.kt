@@ -11,7 +11,7 @@ class APIError {
     @SerializedName("result")
     @Expose
     var message: String? = null
-    @SerializedName("error")
+    @SerializedName("Error")
     @Expose
     var error: Error? = null
 

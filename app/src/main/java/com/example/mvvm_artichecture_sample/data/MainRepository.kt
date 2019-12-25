@@ -1,23 +1,40 @@
 package com.example.mvvm_artichecture_sample.data
 
 import com.example.mvvm_artichecture_sample.base.BaseRepository
+import com.example.mvvm_artichecture_sample.base.network.Output
 import com.example.mvvm_artichecture_sample.base.network.RetrofitClient
-import com.example.mvvm_artichecture_sample.base.network.base.BaseRetrofitClient
 import com.example.mvvm_artichecture_sample.data.remote.ApiInterface
-import com.example.mvvm_artichecture_sample.data.remote.apimodel.ReposnseModel
+import com.example.mvvm_artichecture_sample.data.remote.apimodel.ResponsModel
 
-import io.reactivex.Observable
-import retrofit2.Response
-
-class MainRepository : BaseRepository<BaseRetrofitClient>(), MainRepositoryHandler {
+class MainRepository : BaseRepository<ApiInterface>(), MainRepositoryHandler {
 
 
+    override suspend fun  countries(requestType:String): Output<ResponsModel> {
+        return safeApiCall(
+                call = { client.getCountreis().await() },
+                requestType = requestType
+        )
+    }
+//    override suspend fun countries(): Deferred<Response<ReposnseModel>> {
+//        return client.createRequest(ApiInterface::class.java)
+//                .getCountreis()
+//    }
+//
+//
+//    override suspend fun countryWithRx(): Observable<Response<ReposnseModel>> {
+//        return client.createRequest(ApiInterface::class.java)
+//                .getCountryList()
+//    }
 
-    override val list: Observable<Response<ReposnseModel>>
-        get() = client.createRequest(ApiInterface::class.java).list
+
+//    suspend fun override countryWithRx: Call<ReposnseModel>
+//    get() = client.createRequest(ApiInterface::class.java)
+//                .getCurrentWeather()
+//                .execute()
+//                .body()
 
 
-    override val client: BaseRetrofitClient
-        get() = RetrofitClient.getInstance()
+    override val client: ApiInterface
+        get() = RetrofitClient.getInstance().createRequest(ApiInterface::class.java)
 
 }

@@ -1,62 +1,69 @@
 package com.example.mvvm_artichecture_sample.ui
 
 import android.app.Application
-
 import androidx.lifecycle.MutableLiveData
-
 import com.example.mvvm_artichecture_sample.R
 import com.example.mvvm_artichecture_sample.base.BaseViewModel
 import com.example.mvvm_artichecture_sample.base.model.MessageModel
-import com.example.mvvm_artichecture_sample.base.network.baseobserver.ErrorConsumer
-import com.example.mvvm_artichecture_sample.base.network.baseobserver.SuccessConsumer
-import com.example.mvvm_artichecture_sample.base.network.baseobserver.WebServiceListener
-import com.example.mvvm_artichecture_sample.base.network.model.APIError
+import com.example.mvvm_artichecture_sample.base.network.Output
 import com.example.mvvm_artichecture_sample.data.MainRepository
-import com.example.mvvm_artichecture_sample.data.remote.apimodel.CountryModel
-import com.example.mvvm_artichecture_sample.data.remote.apimodel.ReposnseModel
+import com.example.mvvm_artichecture_sample.data.remote.apimodel.Country
+import com.example.mvvm_artichecture_sample.data.remote.apimodel.ResponsModel
+import kotlinx.coroutines.launch
 
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-
-class MainViewModel(repository: MainRepository, application: Application) : BaseViewModel<MainRepository>(application, repository), WebServiceListener {
+class MainViewModel(repository: MainRepository, application: Application) : BaseViewModel<MainRepository>(application, repository) {
 
 
     private val showLoadig = MutableLiveData<Boolean>()
     private val showMessage = MutableLiveData<MessageModel>()
-    private val countryList = MutableLiveData<List<CountryModel>>()
+    private val countryList = MutableLiveData<List<Country>>()
     private val showToast = MutableLiveData<String>()
-    private var list: List<CountryModel>? = null
-
+    private var list: List<Country>? = null
+    private var output: Output<ResponsModel>? = null
 
     init {
         fetchList()
     }
 
-    fun fetchList() {
+    private fun fetchList() {
         if (isNetworkConnected) {
             showMessage(false, "", "")
             showLoading(true)
-            addDisposable(repository!!.list
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(SuccessConsumer(this, MAIN_REQUEST), ErrorConsumer(this, MAIN_REQUEST)))
+            scope.launch {
+
+                output = repository!!.countries(MAIN_REQUEST)
+
+                when (output) {
+
+                    is Output.Success -> {
+                        list = (output as Output.Success<ResponsModel>).reposnse.result
+                        setList(list!!)
+                    }
+
+                    is Output.Error -> {
+                        showMessage(true, getString(R.string.error), (output as Output.Error).apiError.message!!)
+                    }
+
+                }
+
+                showLoading(false)
+            }
         } else {
             showMessage(true, getString(R.string.error), getString(R.string.internet_error))
         }
-
-
     }
 
-    private fun setList(list: List<CountryModel>?) {
-        countryList.setValue(list)
+    private fun setList(list: List<Country>) {
+
+        countryList.postValue(list)
     }
 
-    fun updateList(): MutableLiveData<List<CountryModel>> {
+    fun updateList(): MutableLiveData<List<Country>> {
         return countryList
     }
 
     private fun showMessage(show: Boolean, title: String, message: String) {
-        showMessage.setValue(MessageModel(show, title, message))
+        showMessage.postValue(MessageModel(show, title, message))
     }
 
     fun message(): MutableLiveData<MessageModel> {
@@ -64,34 +71,21 @@ class MainViewModel(repository: MainRepository, application: Application) : Base
     }
 
     private fun showLoading(show: Boolean) {
-        showLoadig.setValue(show)
+        showLoadig.postValue(show)
     }
 
     fun loading(): MutableLiveData<Boolean> {
         return showLoadig
     }
 
-    @Throws(Exception::class)
-    override fun onSuccess(`object`: Any, statusCode: Int, requestType: String) {
-        showLoading(false)
-        list = (`object` as ReposnseModel).countryModel
-        setList(list)
+    fun itemClicked(position: Int) {
+        if (list != null) {
+            showToast.value = list!![position].code.toString()
+        }
     }
 
     fun showToast(): MutableLiveData<String> {
         return showToast
-    }
-
-    @Throws(Exception::class)
-    override fun onError(apiError: APIError, statusCode: Int, requestType: String) {
-        showLoading(false)
-        showMessage(true,getString(R.string.error),apiError.message?:getString(R.string.errorRecieveData))
-    }
-
-    fun itemClicked(position: Int) {
-        if (list != null) {
-            showToast.setValue(list!![position].code.toString())
-        }
     }
 
     companion object {

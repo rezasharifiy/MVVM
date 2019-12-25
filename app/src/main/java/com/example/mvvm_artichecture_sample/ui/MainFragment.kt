@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvm_artichecture_sample.R
 import com.example.mvvm_artichecture_sample.base.BaseFragment
 import com.example.mvvm_artichecture_sample.base.ViewModelFactory
-import com.example.mvvm_artichecture_sample.data.remote.apimodel.CountryModel
+import com.example.mvvm_artichecture_sample.data.remote.apimodel.Country
 import com.example.mvvm_artichecture_sample.ui.adpater.MainAdapter
 import com.example.mvvm_artichecture_sample.ui.adpater.MainAdapterHanlder
 
@@ -42,10 +42,11 @@ class MainFragment : BaseFragment<MainViewModel>(), MainAdapterHanlder {
     }
 
     private fun updateList() {
-        mViewModel!!.updateList().observe(this, Observer { list -> addList(list) })
+        mViewModel!!.updateList().observe(this, Observer {
+            list -> addList(list) })
     }
 
-    private fun addList(list: List<CountryModel>) {
+    private fun addList(list: List<Country>) {
         mainAdapter!!.addItem(list)
     }
 
