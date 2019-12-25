@@ -14,6 +14,6 @@ The app has following packages:
 
 project reference resources:
 
-    android-mvvm-architecture: https://github.com/MindorksOpenSource/android-mvvm-architecture
-    Making Network calls on Android with Retrofit + Kotlin’s Coroutines :  https://medium.com/hacktive-devs/making-network-calls-on-           android-with-retrofit-kotlins-coroutines-72fd2594184b
+    android-mvvm-architecture: [https://github.com/MindorksOpenSource/android-mvvm-architecture]
+    Making Network calls on Android with Retrofit + Kotlin’s Coroutines :[https://medium.com/hacktive-devs/making-network-calls-on-           android-with-retrofit-kotlins-coroutines-72fd2594184b]
 
