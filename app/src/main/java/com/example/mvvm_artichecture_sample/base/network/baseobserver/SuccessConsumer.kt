@@ -20,30 +20,30 @@ class SuccessConsumer(listener: WebServiceListener, private val requestType: Str
     }
 
     @Throws(Exception::class)
-    override fun accept(tResponse: Response<*>) {
-        if (tResponse.isSuccessful) {
-            manageSuccess(tResponse)
+    override fun accept(response: Response<*>) {
+        if (response.isSuccessful) {
+            manageSuccess(response)
         } else {
-            if (tResponse.errorBody() != null && tResponse.code() < RestCode.SERVER_ERROR_STATUS_CODE) {
-                var apiErrors: APIError? = getErrorMessage(tResponse.errorBody())
+            if (response.errorBody() != null && response.code() < RestCode.SERVER_ERROR_STATUS_CODE) {
+                var apiErrors: APIError? = getErrorMessage(response.errorBody())
                 if (apiErrors != null) {
-                    manageOnError(apiErrors, tResponse.code(), requestType)
+                    manageOnError(apiErrors, response.code(), requestType)
                 } else {
-                    apiErrors = APIError("Unexpected error", tResponse.code())
-                    manageOnError(apiErrors, tResponse.code(), requestType)
+                    apiErrors = APIError("Unexpected Error", response.code())
+                    manageOnError(apiErrors, response.code(), requestType)
                 }
 
             } else {
-                val apiError = APIError("Unexpected error", tResponse.code())
-                manageOnError(apiError, tResponse.code(), requestType)
+                val apiError = APIError("Unexpected Error", response.code())
+                manageOnError(apiError, response.code(), requestType)
             }
         }
     }
 
-    private fun manageSuccess(tResponse: Response<*>) {
+    private fun manageSuccess(response: Response<*>) {
 
         try {
-            listenerWeakReference.get()!!.onSuccess(tResponse.body()!!, tResponse.code(), requestType)
+            listenerWeakReference.get()!!.onSuccess(response.body()!!, response.code(), requestType)
         } catch (e: Exception) {
             manageInternalException(e)
         }
@@ -62,7 +62,7 @@ class SuccessConsumer(listener: WebServiceListener, private val requestType: Str
     private fun manageInternalException(ex: Exception) {
         ex.printStackTrace()
         try {
-            val apiError = APIError("Unexpected error", ClientCode.EXCEPTION_CODE)
+            val apiError = APIError("Unexpected Error", ClientCode.EXCEPTION_CODE)
             listenerWeakReference.get()!!.onError(apiError, ClientCode.EXCEPTION_CODE, requestType)
         } catch (e: Exception) {
             e.printStackTrace()

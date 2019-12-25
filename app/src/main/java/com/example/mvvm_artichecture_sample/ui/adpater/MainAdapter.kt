@@ -6,23 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.mvvm_artichecture_sample.R
-import com.example.mvvm_artichecture_sample.data.remote.apimodel.CountryModel
+import com.example.mvvm_artichecture_sample.data.remote.apimodel.Country
+import java.util.*
 
-import java.lang.ref.WeakReference
-import java.util.ArrayList
-
-class MainAdapter(private val mContext: Context, hanlder: MainAdapterHanlder) : RecyclerView.Adapter<MainAdapter.MainViewHolder>(), View.OnClickListener {
-    private val mList: MutableList<CountryModel>?
-    private val hanlderWeakReference: WeakReference<MainAdapterHanlder>
+class MainAdapter(private val mContext: Context, private val hanlder: MainAdapterHanlder) : RecyclerView.Adapter<MainAdapter.MainViewHolder>(), View.OnClickListener {
+    private val mList: MutableList<Country>?
 
     init {
-        hanlderWeakReference = WeakReference(hanlder)
         mList = ArrayList()
     }
 
-    fun addItem(list: List<CountryModel>) {
+    fun addItem(list: List<Country>) {
         mList!!.addAll(list)
         notifyDataSetChanged()
     }
@@ -48,8 +43,7 @@ class MainAdapter(private val mContext: Context, hanlder: MainAdapterHanlder) : 
     }
 
     private fun clicked(position: Int) {
-        val handler = hanlderWeakReference.get()
-        handler?.onItemClick(position)
+        hanlder.onItemClick(position)
     }
 
     inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

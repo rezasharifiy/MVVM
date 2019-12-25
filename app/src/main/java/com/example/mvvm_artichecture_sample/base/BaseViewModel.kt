@@ -9,9 +9,17 @@ import androidx.lifecycle.OnLifecycleEvent
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlin.coroutines.CoroutineContext
 
 open class BaseViewModel<R : BaseRepository<*>>(application: Application, repository: R) : AndroidViewModel(application), LifecycleObserver {
 
+    private val parentJob = Job()
+    private val coroutineContext: CoroutineContext get() = parentJob + Dispatchers.Default
+    protected val scope = CoroutineScope(coroutineContext)
 
     protected var repository: R? = null
         private set
@@ -37,11 +45,13 @@ open class BaseViewModel<R : BaseRepository<*>>(application: Application, reposi
         lifecycle.addObserver(this)
     }
 
+    fun cancelRequests() = coroutineContext.cancel()
 
     override fun onCleared() {
-        compositeDisposable.dispose()
+//        compositeDisposable.dispose()
         repository = null
         lifecycle = null
+        cancelRequests()
         super.onCleared()
     }
 

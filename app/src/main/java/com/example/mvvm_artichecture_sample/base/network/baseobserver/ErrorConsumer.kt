@@ -28,7 +28,7 @@ class ErrorConsumer(listener: WebServiceListener, private val requestType: Strin
             apiError.code = ClientCode.SERVER_TIMEOUT_CODE
             code = ClientCode.SERVER_TIMEOUT_CODE
         }
-        apiError.message = "Unexpected error"
+        apiError.message = "Unexpected Error"
         manageOnError(apiError, code, requestType)
     }
 
@@ -45,7 +45,7 @@ class ErrorConsumer(listener: WebServiceListener, private val requestType: Strin
         ex.printStackTrace()
         if (listenerWeakReference.get() != null) {
             try {
-                val apiError = APIError("Unexpected error", ClientCode.EXCEPTION_CODE)
+                val apiError = APIError("Unexpected Error", ClientCode.EXCEPTION_CODE)
                 listenerWeakReference.get()!!.onError(apiError, ClientCode.EXCEPTION_CODE, requestType)
             } catch (e: Exception) {
                 e.printStackTrace()
