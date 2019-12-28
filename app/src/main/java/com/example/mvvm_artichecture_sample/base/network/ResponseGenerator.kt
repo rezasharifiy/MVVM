@@ -13,12 +13,12 @@ open class ResponseGenerator<T : Any>(private val call: suspend () -> retrofit2.
 
 
     public suspend fun callApi(): Output<T> {
-        try {
+        return try {
             val response = call.invoke()
-            return manageResponse(response)
+            manageResponse(response)
         } catch (e: java.lang.Exception) {
             val apiErrors = APIError("Unexpected Error", ClientCode.EXCEPTION_CODE)
-            return manageOnError(apiErrors, ClientCode.EXCEPTION_CODE, requestType)
+            manageOnError(apiErrors, ClientCode.EXCEPTION_CODE, requestType)
         }
 
     }
@@ -46,19 +46,6 @@ open class ResponseGenerator<T : Any>(private val call: suspend () -> retrofit2.
         }
     }
 
-    fun onFailure(t: Exception) {
-        val apiError = APIError()
-        val code: Int
-        if (t is UnknownHostException || t is SocketTimeoutException) {
-            apiError.code = ClientCode.NO_INTERNET_TIMEOUT_CODE
-            code = ClientCode.NO_INTERNET_TIMEOUT_CODE
-        } else {
-            apiError.code = ClientCode.SERVER_TIMEOUT_CODE
-            code = ClientCode.SERVER_TIMEOUT_CODE
-        }
-        apiError.message = "Unexpected Error"
-        manageOnError(apiError, code, requestType)
-    }
 
     private fun manageOnError(apiError: APIError, statusCode: Int, requestType: String): Output<T> {
         return try {

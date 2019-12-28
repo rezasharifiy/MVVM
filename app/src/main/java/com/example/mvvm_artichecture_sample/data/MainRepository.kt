@@ -15,24 +15,6 @@ class MainRepository : BaseRepository<ApiInterface>(), MainRepositoryHandler {
                 requestType = requestType
         )
     }
-//    override suspend fun countries(): Deferred<Response<ReposnseModel>> {
-//        return client.createRequest(ApiInterface::class.java)
-//                .getCountreis()
-//    }
-//
-//
-//    override suspend fun countryWithRx(): Observable<Response<ReposnseModel>> {
-//        return client.createRequest(ApiInterface::class.java)
-//                .getCountryList()
-//    }
-
-
-//    suspend fun override countryWithRx: Call<ReposnseModel>
-//    get() = client.createRequest(ApiInterface::class.java)
-//                .getCurrentWeather()
-//                .execute()
-//                .body()
-
 
     override val client: ApiInterface
         get() = RetrofitClient.getInstance().createRequest(ApiInterface::class.java)

@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(repository: MainRepository, application: Application) : BaseViewModel<MainRepository>(application, repository) {
 
-
     private val showLoading = MutableLiveData<Boolean>()
     private val showMessage = MutableLiveData<MessageModel>()
     private val countryList = MutableLiveData<List<Country>>()
@@ -27,6 +26,7 @@ class MainViewModel(repository: MainRepository, application: Application) : Base
 
     private fun fetchList() {
         if (isNetworkConnected) {
+
             showMessage(false, "", "")
 
             scope.launch {
@@ -35,10 +35,11 @@ class MainViewModel(repository: MainRepository, application: Application) : Base
 
                 callListApi()
 
-                manageResponse()
+                manageResponse(output!!)
 
                 showLoading(false)
             }
+
         } else {
 
             showMessage(true, getString(R.string.error), getString(R.string.internet_error))
@@ -46,30 +47,33 @@ class MainViewModel(repository: MainRepository, application: Application) : Base
         }
     }
 
-    private fun manageResponse() {
+    private fun manageResponse(output: Output<ResponsModel>) {
+
+
         when (output) {
 
             is Output.Success -> {
-                manageSuccessResponse()
+                manageSuccessResponse(output)
             }
 
             is Output.Error -> {
-                manageErrorResponse()
+                manageErrorResponse(output)
             }
 
         }
+
     }
 
     private suspend fun callListApi() {
         output = repository!!.countries(MAIN_REQUEST)
     }
 
-    private fun manageErrorResponse() {
-        showMessage(true, getString(R.string.error), (output as Output.Error).apiError.message!!)
+    private fun manageErrorResponse(output: Output.Error) {
+        showMessage(true, getString(R.string.error), output.apiError.message!!)
     }
 
-    private fun manageSuccessResponse() {
-        list = (output as Output.Success<ResponsModel>).response.result
+    private fun manageSuccessResponse(output: Output.Success<ResponsModel>) {
+        list = output.response.result
         setList(list!!)
     }
 

@@ -10,6 +10,6 @@ abstract class BaseRepository<R> {
     protected abstract val client: R
 
     suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>, requestType: String): Output<T> {
-        return ResponseGenerator<T>(call, requestType).callApi()
+        return ResponseGenerator(call, requestType).callApi()
     }
 }
