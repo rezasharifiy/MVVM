@@ -2,10 +2,10 @@ package com.example.mvvm_artichecture_sample.base.network.statuscode
 
 object ClientCode {
 
-    val NO_INTERNET_TIMEOUT_CODE = 700
-    val SERVER_TIMEOUT_CODE = 701
+    const val NO_INTERNET_TIMEOUT_CODE = 700
+    const val SERVER_TIMEOUT_CODE = 701
 
-    val EXCEPTION_CODE = -1
+    const val EXCEPTION_CODE = -1
 
 
     fun isExceptionError(code: Int): Boolean {

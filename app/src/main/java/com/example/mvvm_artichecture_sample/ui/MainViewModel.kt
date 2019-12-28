@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class MainViewModel(repository: MainRepository, application: Application) : BaseViewModel<MainRepository>(application, repository) {
 
 
-    private val showLoadig = MutableLiveData<Boolean>()
+    private val showLoading = MutableLiveData<Boolean>()
     private val showMessage = MutableLiveData<MessageModel>()
     private val countryList = MutableLiveData<List<Country>>()
     private val showToast = MutableLiveData<String>()
@@ -28,29 +28,49 @@ class MainViewModel(repository: MainRepository, application: Application) : Base
     private fun fetchList() {
         if (isNetworkConnected) {
             showMessage(false, "", "")
-            showLoading(true)
+
             scope.launch {
 
-                output = repository!!.countries(MAIN_REQUEST)
+                showLoading(true)
 
-                when (output) {
+                callListApi()
 
-                    is Output.Success -> {
-                        list = (output as Output.Success<ResponsModel>).reposnse.result
-                        setList(list!!)
-                    }
-
-                    is Output.Error -> {
-                        showMessage(true, getString(R.string.error), (output as Output.Error).apiError.message!!)
-                    }
-
-                }
+                manageResponse()
 
                 showLoading(false)
             }
         } else {
+
             showMessage(true, getString(R.string.error), getString(R.string.internet_error))
+
         }
+    }
+
+    private fun manageResponse() {
+        when (output) {
+
+            is Output.Success -> {
+                manageSuccessResponse()
+            }
+
+            is Output.Error -> {
+                manageErrorResponse()
+            }
+
+        }
+    }
+
+    private suspend fun callListApi() {
+        output = repository!!.countries(MAIN_REQUEST)
+    }
+
+    private fun manageErrorResponse() {
+        showMessage(true, getString(R.string.error), (output as Output.Error).apiError.message!!)
+    }
+
+    private fun manageSuccessResponse() {
+        list = (output as Output.Success<ResponsModel>).response.result
+        setList(list!!)
     }
 
     private fun setList(list: List<Country>) {
@@ -71,16 +91,16 @@ class MainViewModel(repository: MainRepository, application: Application) : Base
     }
 
     private fun showLoading(show: Boolean) {
-        showLoadig.postValue(show)
+        showLoading.postValue(show)
     }
 
     fun loading(): MutableLiveData<Boolean> {
-        return showLoadig
+        return showLoading
     }
 
     fun itemClicked(position: Int) {
         if (list != null) {
-            showToast.value = list!![position].code.toString()
+            showToast.value = list!![position].code
         }
     }
 
@@ -89,6 +109,6 @@ class MainViewModel(repository: MainRepository, application: Application) : Base
     }
 
     companion object {
-        private val MAIN_REQUEST = "main_list"
+        private const val MAIN_REQUEST = "main_list"
     }
 }
