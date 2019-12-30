@@ -1,6 +1,7 @@
 package com.example.mvvm_artichecture_sample.ui
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.mvvm_artichecture_sample.R
 import com.example.mvvm_artichecture_sample.base.BaseViewModel
@@ -8,7 +9,7 @@ import com.example.mvvm_artichecture_sample.base.model.MessageModel
 import com.example.mvvm_artichecture_sample.base.network.Output
 import com.example.mvvm_artichecture_sample.data.MainRepository
 import com.example.mvvm_artichecture_sample.data.remote.apimodel.Country
-import com.example.mvvm_artichecture_sample.data.remote.apimodel.ResponsModel
+import com.example.mvvm_artichecture_sample.data.remote.apimodel.ResponseModel
 import kotlinx.coroutines.launch
 
 class MainViewModel(repository: MainRepository, application: Application) : BaseViewModel<MainRepository>(application, repository) {
@@ -18,7 +19,7 @@ class MainViewModel(repository: MainRepository, application: Application) : Base
     private val countryList = MutableLiveData<List<Country>>()
     private val showToast = MutableLiveData<String>()
     private var list: List<Country>? = null
-    private var output: Output<ResponsModel>? = null
+    private var output: Output<ResponseModel>? = null
 
     init {
         fetchList()
@@ -41,13 +42,11 @@ class MainViewModel(repository: MainRepository, application: Application) : Base
             }
 
         } else {
-
             showMessage(true, getString(R.string.error), getString(R.string.internet_error))
-
         }
     }
 
-    private fun manageResponse(output: Output<ResponsModel>) {
+    private fun manageResponse(output: Output<ResponseModel>) {
 
 
         when (output) {
@@ -72,13 +71,12 @@ class MainViewModel(repository: MainRepository, application: Application) : Base
         showMessage(true, getString(R.string.error), output.apiError.message!!)
     }
 
-    private fun manageSuccessResponse(output: Output.Success<ResponsModel>) {
+    private fun manageSuccessResponse(output: Output.Success<ResponseModel>) {
         list = output.response.result
         setList(list!!)
     }
 
     private fun setList(list: List<Country>) {
-
         countryList.postValue(list)
     }
 
@@ -114,5 +112,7 @@ class MainViewModel(repository: MainRepository, application: Application) : Base
 
     companion object {
         private const val MAIN_REQUEST = "main_list"
+        private val TAG = MainViewModel::class.java.simpleName
+
     }
 }

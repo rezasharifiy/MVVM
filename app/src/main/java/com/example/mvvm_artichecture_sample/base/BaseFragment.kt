@@ -6,22 +6,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 
-import io.reactivex.disposables.Disposable
-
 abstract class BaseFragment<V : BaseViewModel<*>> : Fragment() {
 
+    private var currLayoutName: String? = null
+    private var mClassName: String? = null
     protected var currView: View? = null
-    protected var currLayoutName: String?=null
     protected var activityContext: Context? = null
     protected var isActive: Boolean = false
-    private var mClassName: String? = null
-    public var mViewModel: V?=null
-
     protected abstract val viewModel: V
+
+    open var mViewModel: V? = null
 
     /**
      * @return layout resource id
@@ -55,7 +52,7 @@ abstract class BaseFragment<V : BaseViewModel<*>> : Fragment() {
     }
 
 
-    fun setLayoutView(layoutId: Int, inflater: LayoutInflater, container: ViewGroup?) {
+    private fun setLayoutView(layoutId: Int, inflater: LayoutInflater, container: ViewGroup?) {
         currView = inflater.inflate(layoutId, container, false)
 
         currLayoutName = resources.getResourceEntryName(layoutId)
@@ -63,21 +60,16 @@ abstract class BaseFragment<V : BaseViewModel<*>> : Fragment() {
         activityContext = context
     }
 
-    fun setLayoutView(layoutId: Int, inflater: LayoutInflater, container: ViewGroup?,
-                      className: String) {
+    open fun setLayoutView(layoutId: Int, inflater: LayoutInflater, container: ViewGroup?,
+                           className: String) {
         setLayoutView(layoutId, inflater, container)
-
         mClassName = className
     }
 
-    fun addDisposable(disposable: Disposable) {
-        mViewModel!!.compositeDisposable.add(disposable)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         viewLifecycleOwnerLiveData.removeObservers(this)
-
     }
 
     protected fun back() {

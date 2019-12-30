@@ -1,7 +1,6 @@
 package com.example.mvvm_artichecture_sample.data.remote
 
-import com.example.mvvm_artichecture_sample.data.remote.apimodel.ResponsModel
-import io.reactivex.Observable
+import com.example.mvvm_artichecture_sample.data.remote.apimodel.ResponseModel
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
@@ -9,9 +8,9 @@ import retrofit2.http.GET
 interface ApiInterface {
 
     @GET("countries")
-     fun getCountryList(): Observable<Response<ResponsModel>>
+    suspend fun getCountryList(): Response<ResponseModel>
 
     @GET("countries")
-     fun getCountreis(): Deferred<Response<ResponsModel>>
+    fun getCountryAsync(): Deferred<Response<ResponseModel>>
 
 }
